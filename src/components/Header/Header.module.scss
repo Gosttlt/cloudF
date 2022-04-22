@@ -1,0 +1,20 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  font-size: 16px;
+  background: #000;
+
+  .link {
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 20px;
+    transition: 0.3s;
+    text-decoration: none;
+    color: #fff;
+    &:hover {
+      background: #fff;
+      color: #000;
+    }
+  }
+}

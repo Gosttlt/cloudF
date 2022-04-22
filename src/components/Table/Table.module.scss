@@ -1,0 +1,49 @@
+.header {
+  text-align: center;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin: 16px 0;
+}
+.table {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  position: relative;
+  padding-top: 88px;
+}
+
+.table_header {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  text-transform: uppercase;
+  padding: 16px 0;
+  border-bottom: 1px solid #000;
+  margin-bottom: 16px;
+  position: sticky;
+  top: 0px;
+  background: #fff;
+}
+.cell {
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+}
+.row {
+  display: flex;
+  cursor: pointer;
+  &:nth-child(2n + 1) {
+    background: rgb(238 238 238);
+  }
+  &:hover {
+    background: #cccccc;
+    transition: 0.3;
+  }
+}
+.procentN {
+  color: rgb(255, 0, 0);
+}
+.procentP {
+  color: rgb(124, 206, 1);
+}
