@@ -4,94 +4,68 @@ import Modal from 'components/Modal'
 import Table from 'components/Table'
 import Tabs, {TabsPanel, TabsPanels} from 'components/Tabs'
 import {observer} from 'mobx-react-lite'
-import React, {useMemo, useState} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import {useCallback} from 'react'
 import {useEffect} from 'react'
 import QuotesStore from 'stores/QuotesStore'
-import createData, {columnsData, tabsObj} from './assets'
+import {columnsData, tabsObj} from './assets'
 
 import classes from './Quotes.module.scss'
 
 const Quotes: React.FC = observer(() => {
   const [tabValue, setTabValue] = useState<string | number>('А')
   const {
-    quotes,
     setLoading,
-    isLoading,
     fetchQuotes,
     setCurrentQuoteId,
-    quoteId,
+    rows,
+    currentQuote,
+    quoteA,
+    quoteB,
   } = QuotesStore
+
   const [isOpenModal, openModalHandler] = useState(false)
 
-  let intervalId: any
-
+  const intervalId = useRef<NodeJS.Timeout>()
+  const firstLoad = useRef(true)
   useEffect(() => {
-    setLoading(true)
-    fetchQuotes()
-    setLoading(false)
-    intervalId = setInterval(fetchQuotes, 5000)
-
-    return () => {
-      clearInterval(intervalId)
+    if (firstLoad.current) {
+      fetchQuotes()
+      firstLoad.current = false
     }
-  }, [setLoading, fetchQuotes, isOpenModal])
+    if (!isOpenModal) {
+      intervalId.current = setInterval(fetchQuotes, 3000)
+    } else {
+      clearInterval(intervalId.current as NodeJS.Timeout)
+    }
+    return () => {
+      clearInterval(intervalId.current as NodeJS.Timeout)
+    }
+  }, [isOpenModal, setLoading, fetchQuotes])
 
-  const rows = useMemo(
-    () =>
-      Object.keys(quotes).map(key => {
-        const currentQuote = quotes[key]
-        return createData(
-          currentQuote.id,
-          key,
-          currentQuote.last,
-          currentQuote.highestBid,
-          <div
-            style={
-              Number(currentQuote.percentChange) < 0
-                ? {color: 'red'}
-                : {color: '#2bab96'}
-            }
-          >
-            {currentQuote.percentChange + ' %'}
-          </div>,
-        )
-      }),
-    [quotes],
+  const modalHandler = useCallback(
+    (id: number) => {
+      openModalHandler(true)
+      setCurrentQuoteId(id)
+    },
+    [setCurrentQuoteId],
   )
-  const middle = useMemo(() => Math.floor(rows.length / 2), [rows])
-  const aData = useMemo(() => rows.slice(0, -middle), [rows, middle])
-  const bData = useMemo(() => rows.slice(middle), [rows, middle])
-
-  const modalHandler = useCallback((id: number) => {
-    openModalHandler(true)
-    setCurrentQuoteId(id)
-    clearInterval(intervalId)
-  }, [])
-  const modalCloseHandler = useCallback(() => {
-    openModalHandler(false)
-    intervalId = setInterval(fetchQuotes, 5000)
-  }, [])
 
   return (
     <Container>
-      <Modal
-        openHandler={openModalHandler}
-        isOpen={isOpenModal}
-        closeHandler={modalCloseHandler}
-      >
-        {quoteId}
+      <Modal isOpen={isOpenModal} closeHandler={() => openModalHandler(false)}>
+        <ModalQuote quote={currentQuote} />
       </Modal>
       <Tabs onChange={setTabValue} tabs={tabsObj} tabValue={tabValue} />
       <div className={classes.wrapper}>
-        {isLoading ? (
+        {!rows.length ? (
           <Loader />
         ) : (
           <TabsPanels value={tabValue}>
             <TabsPanel value='А'>
               <Table
                 columns={columnsData}
-                rows={aData}
+                rows={quoteA}
                 rowsHandler={modalHandler}
                 header={`Котировки < ${tabValue} >`}
               />
@@ -99,7 +73,7 @@ const Quotes: React.FC = observer(() => {
             <TabsPanel value='Б'>
               <Table
                 columns={columnsData}
-                rows={bData}
+                rows={quoteB}
                 header={`Котировки < ${tabValue} >`}
                 rowsHandler={modalHandler}
               />
@@ -112,3 +86,18 @@ const Quotes: React.FC = observer(() => {
 })
 
 export default Quotes
+
+type PropsModal = {
+  quote: any
+}
+const ModalQuote: React.FC<PropsModal> = ({quote}) => {
+  return (
+    <div>
+      <div>id: {quote.id}</div>
+      <div>name: {quote.name}</div>
+      <div>last: {quote.last}</div>
+      <div>highestBid: {quote.highestBid}</div>
+      <div>percentChange: {quote.percentChange}</div>
+    </div>
+  )
+}

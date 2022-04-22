@@ -29,8 +29,8 @@ type CreateDataType = (
   name: string,
   last: string,
   highestBid: string,
-  percentChange: string | JSX.Element,
-) => {[key: string]: string | number | JSX.Element}
+  percentChange: string,
+) => {[key: string]: string | number}
 
 const createData: CreateDataType = (
   id,

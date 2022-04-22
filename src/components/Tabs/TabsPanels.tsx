@@ -1,4 +1,4 @@
-import React, {JSXElementConstructor, ReactElement} from 'react'
+import React, {JSXElementConstructor, memo, ReactElement} from 'react'
 
 type TabsPanelsProps = {
   children:
@@ -6,10 +6,10 @@ type TabsPanelsProps = {
     | ReactElement<any, string | JSXElementConstructor<any>>
   value: string | number
 }
-const TabsPanels: React.FC<TabsPanelsProps> = ({children, value}) => {
+const TabsPanels: React.FC<TabsPanelsProps> = memo(({children, value}) => {
   const upChild = React.Children.map(children, child => {
     return React.cloneElement(child, {valueTabs: value})
   })
   return <>{upChild}</>
-}
+})
 export default TabsPanels

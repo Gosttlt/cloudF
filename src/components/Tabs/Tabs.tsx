@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 import classes from './Tabs.module.scss'
 
@@ -12,7 +12,7 @@ type Props = {
   tabs: TabsType[]
   tabValue: string | number
 }
-const Tabs: React.FC<Props> = ({onChange, tabs, tabValue}) => {
+const Tabs: React.FC<Props> = memo(({onChange, tabs, tabValue}) => {
   return (
     <div className={classes.tabs}>
       {tabs.map(tab => (
@@ -28,6 +28,6 @@ const Tabs: React.FC<Props> = ({onChange, tabs, tabValue}) => {
       ))}
     </div>
   )
-}
+})
 
 export default Tabs

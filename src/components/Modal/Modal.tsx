@@ -1,60 +1,54 @@
-import React, {memo, MouseEvent, ReactNode} from 'react'
+import React, {MouseEvent, ReactNode} from 'react'
 import classes from './Modal.module.scss'
 import ReactDOM from 'react-dom'
 import {useEffect} from 'react'
 import {useRef} from 'react'
+import {observer} from 'mobx-react-lite'
 
 type Props = {
   children: ReactNode
-  openHandler: (value: boolean) => void
   isOpen: boolean
   closeHandler: () => void
 }
 
-const Modal: React.FC<Props> = memo(
-  ({children, openHandler, isOpen, closeHandler}) => {
-    const $el: HTMLElement = document.createElement('div')
-    const ref = useRef(null)
-    const onScroll = (e: any) => {
-      e.preventDefault()
-    }
+const Modal: React.FC<Props> = observer(({children, isOpen, closeHandler}) => {
+  const $el: HTMLElement = document.createElement('div')
+  const ref = useRef(null)
 
-    const onClose = (e: MouseEvent<HTMLDivElement>) => {
-      if (e.target !== ref.current) {
-        window.removeEventListener('scroll', onScroll)
-        document.body.style.overflow = 'auto'
-
-        openHandler(false)
-      }
+  const onClose = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target !== ref.current) {
+      closeHandler()
     }
-    const onOpen = () => {
-      openHandler(true)
+  }
+
+  useEffect(() => {
+    document.body?.append($el)
+    return () => {
+      document.body?.removeChild($el)
+    }
+  }, [$el])
+
+  useEffect(() => {
+    if (isOpen) {
       document.body.style.overflow = 'hidden'
-      window.addEventListener('scroll', onScroll)
+    } else {
+      document.body.style.overflow = 'auto'
     }
-    useEffect(() => {
-      document.body?.append($el)
+  }, [isOpen])
 
-      return () => {
-        document.body?.removeChild($el)
-      }
-    }, [$el])
-
-    return (
-      <>
-        <button onClick={onOpen}>123</button>
-        {isOpen &&
-          ReactDOM.createPortal(
-            <div className={classes.wrapper} onClick={onClose}>
-              <div ref={ref} className={classes.content}>
-                {children}
-              </div>
-            </div>,
-            $el,
-          )}
-      </>
-    )
-  },
-)
+  return (
+    <>
+      {isOpen &&
+        ReactDOM.createPortal(
+          <div className={classes.wrapper} onClick={onClose}>
+            <div ref={ref} className={classes.content}>
+              {children}
+            </div>
+          </div>,
+          $el,
+        )}
+    </>
+  )
+})
 
 export default Modal
