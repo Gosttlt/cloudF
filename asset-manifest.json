@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/cloudF/static/css/main.1935dc6b.css",
+    "main.js": "/cloudF/static/js/main.2c04c718.js",
+    "static/css/658.806591a9.chunk.css": "/cloudF/static/css/658.806591a9.chunk.css",
+    "static/js/658.30a79568.chunk.js": "/cloudF/static/js/658.30a79568.chunk.js",
+    "static/css/568.9b013f0e.chunk.css": "/cloudF/static/css/568.9b013f0e.chunk.css",
+    "static/js/568.bdb6a9a1.chunk.js": "/cloudF/static/js/568.bdb6a9a1.chunk.js",
+    "static/js/787.0a9ec07d.chunk.js": "/cloudF/static/js/787.0a9ec07d.chunk.js",
+    "static/js/226.f5506f09.chunk.js": "/cloudF/static/js/226.f5506f09.chunk.js",
+    "index.html": "/cloudF/index.html",
+    "main.1935dc6b.css.map": "/cloudF/static/css/main.1935dc6b.css.map",
+    "main.2c04c718.js.map": "/cloudF/static/js/main.2c04c718.js.map",
+    "658.806591a9.chunk.css.map": "/cloudF/static/css/658.806591a9.chunk.css.map",
+    "658.30a79568.chunk.js.map": "/cloudF/static/js/658.30a79568.chunk.js.map",
+    "568.9b013f0e.chunk.css.map": "/cloudF/static/css/568.9b013f0e.chunk.css.map",
+    "568.bdb6a9a1.chunk.js.map": "/cloudF/static/js/568.bdb6a9a1.chunk.js.map",
+    "787.0a9ec07d.chunk.js.map": "/cloudF/static/js/787.0a9ec07d.chunk.js.map",
+    "226.f5506f09.chunk.js.map": "/cloudF/static/js/226.f5506f09.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1935dc6b.css",
+    "static/js/main.2c04c718.js"
+  ]
+}
